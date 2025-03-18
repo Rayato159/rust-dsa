@@ -2,10 +2,10 @@
 mod tests {
     use std::collections::HashMap;
 
-    use crate::graph::dfs::{dfs_recursive, dfs_stack};
+    use crate::graph::bfs::bfs;
 
     #[test]
-    fn test_dfs_stack_success_case_1() {
+    fn test_bfs_success_case_1() {
         let graph: HashMap<&str, Vec<&str>> = HashMap::from([
             ("Home", vec!["School", "Train Station", "Moutain"]),
             ("School", vec!["Home", "Train Station", "Mall"]),
@@ -17,13 +17,13 @@ mod tests {
         let start = "Home";
         let end = "Mall";
 
-        let result = dfs_stack(&graph, start, end);
+        let result = bfs(&graph, start, end);
         assert_eq!(result, true);
         println!();
     }
 
     #[test]
-    fn test_dfs_recursive_success_case_1() {
+    fn test_bfs_success_case_2() {
         let graph: HashMap<&str, Vec<&str>> = HashMap::from([
             ("Home", vec!["School", "Train Station", "Moutain"]),
             ("School", vec!["Home", "Train Station", "Mall"]),
@@ -32,13 +32,29 @@ mod tests {
             ("Moutain", vec!["Home"]),
         ]);
 
-        let start = "Home";
-        let end = "Mall";
+        let start = "Train Station";
+        let end = "Moutain";
 
-        let mut visited: HashMap<&str, bool> = HashMap::new();
-
-        let result = dfs_recursive(&graph, start, end, &mut visited);
+        let result = bfs(&graph, start, end);
         assert_eq!(result, true);
+        println!();
+    }
+
+    #[test]
+    fn test_bfs_fail_case_1() {
+        let graph: HashMap<&str, Vec<&str>> = HashMap::from([
+            ("Home", vec!["School", "Train Station", "Moutain"]),
+            ("School", vec!["Home", "Train Station", "Mall"]),
+            ("Train Station", vec!["Mall", "School", "Home"]),
+            ("Mall", vec!["School", "Train Station"]),
+            ("Moutain", vec!["Home"]),
+        ]);
+
+        let start = "Train Station";
+        let end = "Siam";
+
+        let result = bfs(&graph, start, end);
+        assert_eq!(result, false);
         println!();
     }
 }
